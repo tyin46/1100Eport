@@ -153,13 +153,11 @@ def build_prompt(contexts: List[Tuple[Chunk, float]], question: str) -> str:
     )
     return system, user
 
-def generate_with_openai(system: str, user: str, model: str = None) -> str:
+def generate_with_openai(system: str, user: str, api_key: str, model: str = None) -> str:
     """Call OpenAI Chat Completions API."""
-    load_dotenv()
-    api_key = os.getenv("OPENAI_API_KEY")
     if not api_key:
-        raise RuntimeError("OPENAI_API_KEY environment variable is not set.")
-    model = model or os.environ.get("OPENAI_MODEL", "gpt-4o-mini")
+        raise RuntimeError("OpenAI API key is required.")
+    model = model or "gpt-4o-mini"
     client = OpenAI(api_key=api_key)
 
     last_err = None
@@ -180,13 +178,13 @@ def generate_with_openai(system: str, user: str, model: str = None) -> str:
             time.sleep(2 ** attempt)
     raise RuntimeError(f"OpenAI generation failed after retries: {last_err}")
 
-def answer_question(rag: RAGIndex, question: str, top_k: int = 5) -> Dict:
+def answer_question(rag: RAGIndex, question: str, api_key: str, top_k: int = 5) -> Dict:
     """Full RAG pipeline for one question: retrieve → prompt → generate → package outputs."""
     contexts = rag.search(question, top_k=top_k)
     sys_prompt, user_prompt = build_prompt(contexts, question)
 
     try:
-        answer = generate_with_openai(sys_prompt, user_prompt)
+        answer = generate_with_openai(sys_prompt, user_prompt, api_key)
     except Exception as e:
         answer = f"Generation failed: {e}"
 
@@ -209,87 +207,106 @@ st.set_page_config(
 def load_css():
     st.markdown("""
     <style>
-    /* Improved color scheme with better contrast */
+    /* Grey-black-white theme with blue/red accents */
     .main {
-        background-color: #ffffff;
-        color: #2c3e50;
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        color: #212529;
     }
     
     .sidebar .sidebar-content {
-        background-color: #f8f9fa;
-        border-right: 1px solid #dee2e6;
+        background-color: #d3d3d3;
+        border-right: 1px solid #adb5bd;
     }
     
     /* Streamlit default text styling improvements */
     .stApp {
-        background-color: #ffffff;
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
     }
     
     .stMarkdown {
-        color: #2c3e50;
+        color: #212529;
     }
     
     .stMarkdown h1, .stMarkdown h2, .stMarkdown h3, .stMarkdown h4 {
-        color: #2c3e50;
+        color: #212529;
         font-weight: 600;
     }
     
     .main-header {
         font-size: 2.5rem;
-        color: #1a252f;
+        color: #1a1a1a;
         text-align: center;
         margin-bottom: 2rem;
         font-weight: 700;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
     }
     
     .section-header {
         font-size: 2rem;
-        color: #1a252f;
-        border-bottom: 3px solid #3498db;
+        color: #1a1a1a;
+        border-bottom: 3px solid #007bff;
         padding-bottom: 10px;
         margin: 1.5rem 0 1rem 0;
         font-weight: 600;
+        text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
     }
     
     .highlight-box {
-        background-color: #f8f9fa;
+        background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(248,249,250,0.95) 100%);
         padding: 25px;
-        border-radius: 10px;
-        border-left: 5px solid #3498db;
+        border-radius: 15px;
+        border-left: 5px solid #007bff;
         margin: 1rem 0;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        backdrop-filter: blur(10px);
     }
     
     .highlight-box h3 {
-        color: #2c3e50 !important;
+        color: #212529 !important;
         margin-top: 0;
         margin-bottom: 15px;
     }
     
     .highlight-box p {
-        color: #34495e !important;
+        color: #495057 !important;
         line-height: 1.6;
         margin-bottom: 0;
     }
     
     .skill-tag {
-        background-color: #3498db;
+        background: linear-gradient(135deg, #495057 0%, #343a40 100%);
         color: #ffffff;
-        padding: 6px 12px;
-        border-radius: 15px;
-        margin: 3px;
+        padding: 8px 16px;
+        border-radius: 20px;
+        margin: 4px;
         display: inline-block;
         font-size: 0.9rem;
         font-weight: 500;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        transition: transform 0.2s ease;
+    }
+    
+    .skill-tag:hover {
+        transform: translateY(-2px);
+        background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+        box-shadow: 0 4px 12px rgba(0,123,255,0.3);
     }
     
     .project-card {
-        background-color: #ffffff;
+        background: linear-gradient(135deg, rgba(255,255,255,0.98) 0%, rgba(248,249,250,0.98) 100%);
         padding: 25px;
-        border-radius: 10px;
-        border: 2px solid #e9ecef;
+        border-radius: 15px;
+        border: 1px solid #dee2e6;
         margin: 1rem 0;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+        backdrop-filter: blur(10px);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .project-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+        border-color: #007bff;
     }
     
     .project-card h3 {
@@ -301,69 +318,121 @@ def load_css():
         font-style: italic;
         text-align: center;
         font-size: 1.2rem;
-        color: #34495e;
-        background-color: #ecf0f1;
-        padding: 25px;
-        border-radius: 10px;
+        color: #212529;
+        background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(248,249,250,0.95) 100%);
+        padding: 30px;
+        border-radius: 15px;
         margin: 2rem 0;
-        border: 1px solid #bdc3c7;
+        border: 1px solid #dee2e6;
+        border-left: 4px solid #dc3545;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        backdrop-filter: blur(10px);
     }
     
     .stButton > button {
-        background-color: #3498db;
+        background: linear-gradient(135deg, #495057 0%, #343a40 100%);
         color: #ffffff;
-        border-radius: 8px;
+        border-radius: 12px;
         border: none;
         font-weight: 600;
-        padding: 0.5rem 1rem;
+        padding: 0.7rem 1.5rem;
         transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
     }
     
     .stButton > button:hover {
-        background-color: #2980b9;
+        background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
         color: #ffffff;
-        box-shadow: 0 2px 8px rgba(52, 152, 219, 0.3);
+        box-shadow: 0 6px 20px rgba(0,123,255,0.4);
+        transform: translateY(-2px);
     }
     
     .metric-container {
-        background-color: #f8f9fa;
+        background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(248,249,250,0.95) 100%);
         padding: 20px;
-        border-radius: 10px;
+        border-radius: 15px;
         border: 1px solid #dee2e6;
         margin: 8px;
         text-align: center;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        backdrop-filter: blur(10px);
     }
     
-    /* Sidebar improvements */
-    .css-1d391kg {
-        background-color: #f8f9fa;
+    /* Sidebar improvements - Light grey background */
+    .css-1d391kg,
+    .css-1d391kg .block-container,
+    section[data-testid="stSidebar"],
+    section[data-testid="stSidebar"] > div,
+    .stSidebar,
+    .stSidebar > div {
+        background-color: #d3d3d3 !important;
+        background: #d3d3d3 !important;
+    }
+    
+    /* Sidebar text styling - Dark text for contrast */
+    .css-1d391kg .stMarkdown,
+    .css-1d391kg .stMarkdown h1,
+    .css-1d391kg .stMarkdown h2,
+    .css-1d391kg .stMarkdown h3,
+    .css-1d391kg .stMarkdown p,
+    section[data-testid="stSidebar"] .stMarkdown,
+    section[data-testid="stSidebar"] .stMarkdown h1,
+    section[data-testid="stSidebar"] .stMarkdown h2,
+    section[data-testid="stSidebar"] .stMarkdown h3,
+    section[data-testid="stSidebar"] .stMarkdown p {
+        color: #212529 !important;
     }
     
     /* Text input styling */
     .stTextInput > div > div > input {
-        background-color: #ffffff;
+        background: rgba(255,255,255,0.95);
         border: 2px solid #dee2e6;
-        border-radius: 8px;
-        color: #2c3e50;
+        border-radius: 12px;
+        color: #212529;
+        backdrop-filter: blur(10px);
     }
     
     .stTextInput > div > div > input:focus {
-        border-color: #3498db;
-        box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+        border-color: #007bff;
+        box-shadow: 0 0 0 3px rgba(0,123,255,0.2);
+        background: rgba(255,255,255,1);
     }
     
     /* File uploader styling */
     .stFileUploader > div {
-        background-color: #f8f9fa;
-        border: 2px dashed #bdc3c7;
-        border-radius: 10px;
+        background: linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(248,249,250,0.9) 100%);
+        border: 2px dashed #6c757d;
+        border-radius: 15px;
+        backdrop-filter: blur(10px);
+    }
+    
+    .stFileUploader > div:hover {
+        border-color: #007bff;
+        background: linear-gradient(135deg, rgba(255,255,255,1) 0%, rgba(240,248,255,1) 100%);
     }
     
     /* Expander styling */
     .streamlit-expanderHeader {
-        background-color: #f8f9fa;
-        color: #2c3e50;
+        background: linear-gradient(135deg, #f8f9fa 0%, #d3d3d3 100%);
+        color: #212529;
         font-weight: 600;
+        border-radius: 8px;
+    }
+    
+    /* Red accent for errors and warnings */
+    .stAlert[data-baseweb="notification"][data-kind="error"] {
+        background: linear-gradient(135deg, rgba(220,53,69,0.1) 0%, rgba(255,193,203,0.1) 100%);
+        border-left: 4px solid #dc3545;
+    }
+    
+    .stAlert[data-baseweb="notification"][data-kind="warning"] {
+        background: linear-gradient(135deg, rgba(255,193,7,0.1) 0%, rgba(255,236,179,0.1) 100%);
+        border-left: 4px solid #ffc107;
+    }
+    
+    .stAlert[data-baseweb="notification"][data-kind="success"] {
+        background: linear-gradient(135deg, rgba(40,167,69,0.1) 0%, rgba(195,230,203,0.1) 100%);
+        border-left: 4px solid #28a745;
     }
     
     /* Code blocks */
@@ -382,11 +451,15 @@ def load_css():
     .metric-value {
         font-size: 2rem;
         font-weight: 700;
-        color: #2c3e50;
+        color: #212529;
     }
     
     .metric-delta {
-        color: #27ae60;
+        color: #28a745;
+    }
+    
+    .metric-delta.negative {
+        color: #dc3545;
     }
     
     /* Table styling */
@@ -397,25 +470,130 @@ def load_css():
     
     /* Ensure all text is readable */
     p, div, span, li {
-        color: #2c3e50 !important;
+        color: #212529 !important;
     }
     
     /* Strong text */
     strong, b {
-        color: #1a252f !important;
+        color: #000000 !important;
         font-weight: 700;
     }
     
-    /* Links */
+    /* Links - blue accent */
     a {
-        color: #3498db !important;
+        color: #007bff !important;
         text-decoration: none;
+        transition: color 0.2s ease;
     }
     
     a:hover {
-        color: #2980b9 !important;
+        color: #0056b3 !important;
         text-decoration: underline;
     }
+    
+    /* Special red accent for important links */
+    a.red-accent {
+        color: #dc3545 !important;
+    }
+    
+    a.red-accent:hover {
+        color: #c82333 !important;
+    }
+    
+    /* Special emphasis styling */
+    .blue-emphasis {
+        color: #007bff !important;
+        font-weight: 600;
+    }
+    
+    .red-emphasis {
+        color: #dc3545 !important;
+        font-weight: 600;
+    }
+    
+    .grey-card {
+        background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+        color: white;
+        padding: 20px;
+        border-radius: 15px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    }
+    
+    /* Navigation buttons with light grey sidebar theme */
+    .css-1inwz65 button,
+    section[data-testid="stSidebar"] button,
+    .stSidebar button {
+        background: #f8f9fa !important;
+        color: #212529 !important;
+        border: 1px solid #adb5bd !important;
+        transition: all 0.3s ease;
+    }
+    
+    .css-1inwz65 button:hover,
+    section[data-testid="stSidebar"] button:hover,
+    .stSidebar button:hover {
+        background: linear-gradient(135deg, #007bff 0%, #0056b3 100%) !important;
+        color: white !important;
+        border-color: #007bff !important;
+    }
+    
+    .css-1inwz65 button[aria-selected="true"],
+    section[data-testid="stSidebar"] button[aria-selected="true"],
+    .stSidebar button[aria-selected="true"] {
+        background: linear-gradient(135deg, #495057 0%, #343a40 100%) !important;
+        color: white !important;
+        border-color: #495057 !important;
+    }
+    
+    /* Special emphasis styling */
+    .blue-emphasis {
+        color: #007bff !important;
+        font-weight: 600;
+    }
+    
+    .red-emphasis {
+        color: #dc3545 !important;
+        font-weight: 600;
+    }
+    
+    .grey-card {
+        background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+        color: white;
+        padding: 20px;
+        border-radius: 15px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    }
+    
+    
+    /* Additional sidebar styling for complete coverage */
+    .css-1544g2n,
+    .css-j5r0tf,
+    .css-1cypcdb,
+    .css-1d391kg .css-1544g2n {
+        background-color: #d3d3d3 !important;
+    }
+    
+    /* Sidebar input fields styling */
+    section[data-testid="stSidebar"] .stTextInput > div > div > input,
+    .css-1d391kg .stTextInput > div > div > input {
+        background: rgba(255,255,255,0.9) !important;
+        border: 2px solid #6c757d !important;
+        color: #212529 !important;
+    }
+    
+    section[data-testid="stSidebar"] .stTextInput > div > div > input:focus,
+    .css-1d391kg .stTextInput > div > div > input:focus {
+        border-color: #007bff !important;
+        box-shadow: 0 0 0 3px rgba(0,123,255,0.2) !important;
+    }
+    
+    /* Sidebar file uploader styling */
+    section[data-testid="stSidebar"] .stFileUploader > div,
+    .css-1d391kg .stFileUploader > div {
+        background: rgba(255,255,255,0.8) !important;
+        border: 2px dashed #6c757d !important;
+    }
+    
     </style>
     """, unsafe_allow_html=True)
 
@@ -437,9 +615,9 @@ def show_navigation():
         if st.sidebar.button(page_name, key=page_key, width="stretch"):
             st.session_state.current_page = page_key
     
-    # Initialize current page if not set
+    # Initialize current page if not set (default to chatbot demo)
     if 'current_page' not in st.session_state:
-        st.session_state.current_page = 'chatbot'  # Default to chatbot
+        st.session_state.current_page = 'chatbot'
     
     return st.session_state.current_page
 
@@ -515,6 +693,22 @@ def show_chatbot():
         st.session_state.chat_history = []
     
     # Sidebar for document upload and settings
+    st.sidebar.markdown("### 🔑 API Configuration")
+    
+    # OpenAI API Key input
+    api_key = st.sidebar.text_input(
+        "OpenAI API Key", 
+        type="password", 
+        placeholder="sk-...",
+        help="Enter your OpenAI API key to enable the chatbot functionality"
+    )
+    
+    if not api_key:
+        st.sidebar.info("🔗 [Get your OpenAI API Key](https://platform.openai.com/api-keys)")
+        st.sidebar.warning("⚠️ API key required for chatbot functionality")
+    else:
+        st.sidebar.success("✅ API key configured")
+    
     st.sidebar.markdown("### 📄 Document Management")
     
     uploaded_files = st.sidebar.file_uploader("Upload PDF documents", type="pdf", accept_multiple_files=True)
@@ -597,7 +791,9 @@ def show_chatbot():
     
     # Process question
     if (ask_btn or question) and question:
-        if not uploaded_files:
+        if not api_key:
+            st.warning("⚠️ Please enter your OpenAI API key in the sidebar to ask questions.")
+        elif not uploaded_files:
             st.warning("⚠️ Please upload PDF documents first to ask questions.")
         elif ('rag_index' not in st.session_state or 
               st.session_state.rag_index is None or 
@@ -609,7 +805,7 @@ def show_chatbot():
             with st.spinner("🔍 Searching documents and generating response..."):
                 try:
                     # Use the actual RAG system
-                    result = answer_question(st.session_state.rag_index, question, top_k=top_k)
+                    result = answer_question(st.session_state.rag_index, question, api_key, top_k=top_k)
                     
                     # Format the response
                     answer_text = result["answer"]
