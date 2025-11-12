@@ -1,8 +1,36 @@
-faiss-cpu==1.8.0.post1
-sentence-transformers>=2.7.0
-pypdf>=4.2.0
-gradio>=4.37.2
-openai>=1.35.7
+# ePortfolio Requirements - Unified
+# Compatible with Python 3.13 and Streamlit Cloud
+
+# Web framework
+streamlit>=1.28.0
+
+# Data visualization
+plotly>=5.17.0
+matplotlib>=3.7.0
+seaborn>=0.12.0
+
+# Data manipulation
+pandas>=2.0.0
+numpy>=1.24.0
+
+# Image processing
+Pillow>=10.0.0
+
+# Additional utilities
+python-dateutil>=2.8.0
 requests>=2.32.3
-numpy>=1.26.4
-python-dotenv
+
+# RAG System Dependencies
+# Machine Learning and NLP - Updated for Python 3.13 compatibility
+sentence-transformers>=2.2.0
+faiss-cpu>=1.9.0
+openai>=1.0.0
+
+# Document processing
+pypdf>=3.17.0
+
+# Environment management
+python-dotenv>=1.0.0
+
+# Optional: Gradio for alternative interface
+gradio>=4.37.2
