@@ -602,11 +602,12 @@ def show_navigation():
     st.sidebar.title("📋 Portfolio Sections")
     
     pages = {
-        "🤖 Chatbot Demo": "chatbot",
-        "🏠 Home": "home",
+        "🤖 Technical Project": "chatbot",
+        "📊 Project Analytics": "analytics",
+        "📋 Introduction": "introduction",
         "👨‍💼 About Me": "about",
-        "🚀 Technical Projects": "projects",
-        "📊 Project Analytics": "analytics"
+        "📄 Resume": "resume",
+        "🎯 Career Goals": "career_goals"
     }
     
     # Create navigation buttons instead of dropdown
@@ -623,7 +624,7 @@ def show_navigation():
 
 # Chatbot Demo Page
 def show_chatbot():
-    st.markdown('<h1 class="section-header">🤖 Document QA Chatbot Demo</h1>', unsafe_allow_html=True)
+    st.markdown('<h1 class="section-header">🤖 Discovery Project: Chatbot Demo</h1>', unsafe_allow_html=True)
     
     if not RAG_AVAILABLE:
         st.error("""
@@ -683,6 +684,7 @@ def show_chatbot():
     <h3>🚀 Interactive Document QA System</h3>
     <p>Upload PDF documents and ask questions in natural language. The system uses advanced RAG 
     (Retrieval-Augmented Generation) technology to provide accurate, cited responses.</p>
+    <p>Pages take time to load. Make sure you wait long enough for web page to fully process and load to ensure proper functionality.</p>
     </div>
     """, unsafe_allow_html=True)
     
@@ -867,159 +869,7 @@ def show_chatbot():
         - Supported formats: PDF
         - Max document size: 50MB per file
         """)
-
-# Home Page
-def show_home():
-    st.markdown('<h1 class="main-header">Welcome to My ePortfolio</h1>', unsafe_allow_html=True)
-    
-    col1, col2, col3 = st.columns([1, 2, 1])
-    with col2:
-        st.image("https://via.placeholder.com/300x300/4a90e2/ffffff?text=Your+Photo", 
-                caption="Terry - ECE Student & AI Enthusiast", width=300)
-    
-    st.markdown("""
-    <div class="highlight-box">
-    <h3>🎓 Electrical and Computer Engineering Student</h3>
-    <p>Passionate about AI, Machine Learning, and Human-Computer Interaction. Currently developing innovative 
-    Document QA systems with RAG (Retrieval Augmented Generation) and exploring voice-controlled interfaces 
-    for seamless human-AI interaction.</p>
-    </div>
-    """, unsafe_allow_html=True)
-    
-    # Quick Stats
-    st.markdown("### 📊 Key Metrics")
-    col1, col2, col3, col4 = st.columns(4)
-    with col1:
-        st.markdown('<div class="metric-container">', unsafe_allow_html=True)
-        st.metric("Projects Completed", "8+", "2 this semester")
-        st.markdown('</div>', unsafe_allow_html=True)
-    with col2:
-        st.markdown('<div class="metric-container">', unsafe_allow_html=True)
-        st.metric("Programming Languages", "5", "+1 this year")
-        st.markdown('</div>', unsafe_allow_html=True)
-    with col3:
-        st.markdown('<div class="metric-container">', unsafe_allow_html=True)
-        st.metric("AI Models Implemented", "12", "+4 recent")
-        st.markdown('</div>', unsafe_allow_html=True)
-    with col4:
-        st.markdown('<div class="metric-container">', unsafe_allow_html=True)
-        st.metric("Query Accuracy", "92.4%", "+14.1% improved")
-        st.markdown('</div>', unsafe_allow_html=True)
-    
-    # Inspirational Quote
-    st.markdown("""
-    <div class="quote-box">
-    "The future belongs to those who understand that technology is not just about code, 
-    but about creating meaningful connections between humans and machines."
-    <br><br>
-    <strong>- Personal Motto</strong>
-    </div>
-    """, unsafe_allow_html=True)
-    
-    # Site Overview
-    st.markdown('<h2 class="section-header">Site Overview</h2>', unsafe_allow_html=True)
-    st.markdown("""
-    This ePortfolio showcases my journey in Electrical and Computer Engineering, with a focus on:
-    
-    - **🤖 Artificial Intelligence & Machine Learning**: Deep dive into RAG systems and NLP
-    - **🎤 Voice Interface Development**: Cutting-edge voice control integration with hardware
-    - **📱 Human-Computer Interaction**: Creating intuitive interfaces for complex AI systems
-    - **⚡ Hardware Integration**: Bridging software intelligence with physical devices
-    
-    Navigate through the sections to explore my projects, skills, and vision for the future of AI-powered interfaces.
-    """)
-
-# About Me Page
-def show_about():
-    st.markdown('<h1 class="section-header">About Me</h1>', unsafe_allow_html=True)
-    
-    col1, col2 = st.columns([2, 1])
-    
-    with col1:
-        st.markdown("""
-        ### Who Am I?
         
-        I'm Terry, a passionate Electrical and Computer Engineering student with a deep fascination for 
-        artificial intelligence and its practical applications. My journey in ECE has been driven by 
-        a vision to create technology that doesn't just process data, but understands and responds to 
-        human needs in natural, intuitive ways.
-        
-        ### My Story
-        
-        Growing up in a world increasingly dominated by digital interfaces, I became fascinated by the 
-        gap between human communication and machine understanding. This curiosity led me to pursue ECE 
-        with a specialization in AI and machine learning. My current focus is on developing intelligent 
-        document processing systems that can understand, analyze, and respond to natural language queries.
-        
-        ### What Drives Me
-        
-        The intersection of hardware and software has always captivated me. While many focus purely on 
-        algorithms or purely on circuits, I believe the magic happens when both worlds seamlessly 
-        integrate. My current project combines advanced NLP models with voice recognition hardware 
-        to create a truly hands-free, intelligent document assistant.
-        
-        ### Beyond Academics
-        
-        When I'm not coding or studying circuit diagrams, you'll find me:
-        - 🎵 Exploring music production and audio signal processing
-        - 🏃‍♂️ Running and staying active (great for debugging complex problems!)
-        - 📚 Reading about emerging technologies and their societal impact
-        - 🛠️ Tinkering with IoT devices and home automation projects
-        """)
-    
-    with col2:
-        st.markdown("### Skills & Technologies")
-        
-        skills = {
-            "Programming": ["Python", "C/C++", "JavaScript", "MATLAB", "Verilog"],
-            "AI/ML": ["TensorFlow", "PyTorch", "Transformers", "RAG Systems", "FAISS"],
-            "Hardware": ["Arduino", "Raspberry Pi", "FPGA", "Circuit Design", "PCB Layout"],
-            "Web Development": ["Streamlit", "Gradio", "FastAPI", "React", "Node.js"],
-            "Tools": ["Git", "Docker", "Linux", "OpenAI API", "Jupyter"]
-        }
-        
-        for category, skill_list in skills.items():
-            st.markdown(f"**{category}:**")
-            for skill in skill_list:
-                st.markdown(f'<span class="skill-tag">{skill}</span>', unsafe_allow_html=True)
-            st.markdown("")
-        
-        # Personal Values
-        st.markdown("### Core Values")
-        st.markdown("""
-        - **Innovation**: Always seeking new ways to solve old problems
-        - **Collaboration**: Technology is better when built together
-        - **Accessibility**: AI should be available to everyone
-        - **Ethics**: Responsible development of AI systems
-        - **Continuous Learning**: The field evolves daily, so must I
-        """)
-
-
-
-# Technical Projects Page
-def show_projects():
-    st.markdown('<h1 class="section-header">Technical Projects</h1>', unsafe_allow_html=True)
-    
-    # Featured Project: Document QA RAG System
-    st.markdown("## 🎯 Featured Project: Intelligent Document QA with Voice Control")
-    
-    st.markdown("""
-    <div class="project-card">
-    <h3>🤖 Overview</h3>
-    <p>
-    This project represents the culmination of my work in AI and human-computer interaction. 
-    I've developed an advanced Retrieval-Augmented Generation (RAG) system that allows users 
-    to ask natural language questions about uploaded documents and receive accurate, cited responses.
-    </p>
-    <p>
-    <strong>Current Innovation Goal:</strong> I'm actively working to integrate voice control 
-    capabilities with hardware boards, enabling completely hands-free interaction with the system. 
-    This will revolutionize how users interact with document processing systems, making them 
-    accessible in scenarios where traditional input methods are impractical.
-    </p>
-    </div>
-    """, unsafe_allow_html=True)
-    
     # Technical Architecture
     col1, col2 = st.columns(2)
     
@@ -1380,6 +1230,292 @@ def show_analytics():
             st.markdown(strategy['description'])
 
 
+# Introduction Page
+def show_introduction():
+    st.markdown('<h1 class="main-header">Welcome to My ePortfolio</h1>', unsafe_allow_html=True)
+    
+    col1, col2, col3 = st.columns([1, 2, 1])
+    with col2:
+        st.image("https://via.placeholder.com/300x300/4a90e2/ffffff?text=Your+Photo", 
+                caption="Tianshu Yin - ECE Student & AI Enthusiast", width=300)
+    
+    st.markdown("""
+    <div class="highlight-box">
+    <h3>📋 Introduction</h3>
+    <p>
+    • Passionate Electrical and Computer Engineering student at Georgia Institute of Technology<br>
+    • Specializing in AI, Machine Learning, and Human-Computer Interaction technologies<br>
+    • Currently developing innovative Document QA systems using RAG (Retrieval Augmented Generation)<br>
+    • Exploring voice-controlled interfaces for seamless human-AI interaction in real-world applications
+    </p>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    st.markdown("""
+    <div class="project-card">
+    <h3>🤖 Overview</h3>
+    <p>
+    This project represents the culmination of my work in AI and human-computer interaction. 
+    I've developed an advanced Retrieval-Augmented Generation (RAG) system that allows users 
+    to ask natural language questions about uploaded documents and receive accurate, cited responses.
+    </p>
+    <p>
+    <strong>Current Innovation Goal:</strong> I'm actively working to integrate voice control 
+    capabilities with hardware boards, enabling completely hands-free interaction with the system. 
+    This will revolutionize how users interact with document processing systems, making them 
+    accessible in scenarios where traditional input methods are impractical.
+    </p>
+    </div>
+    """, unsafe_allow_html=True)
+    
+
+# About Me Page
+def show_about():
+    st.markdown('<h1 class="section-header">About Me</h1>', unsafe_allow_html=True)
+    
+    col1, col2 = st.columns([2, 1])
+    
+    with col1:
+        st.markdown("""
+        ### Who Am I?
+        
+        I'm Terry, a passionate Electrical and Computer Engineering student with a deep fascination for 
+        artificial intelligence and its practical applications. My journey in ECE has been driven by 
+        a vision to create technology that doesn't just process data, but understands and responds to 
+        human needs in natural, intuitive ways.
+        
+        ### My Story
+        
+        Growing up in a world increasingly dominated by digital interfaces, I became fascinated by the 
+        gap between human communication and machine understanding. This curiosity led me to pursue ECE 
+        with a specialization in AI and machine learning. My current focus is on developing intelligent 
+        document processing systems that can understand, analyze, and respond to natural language queries.
+        
+        ### What Drives Me
+        
+        The intersection of hardware and software has always captivated me. While many focus purely on 
+        algorithms or purely on circuits, I believe the magic happens when both worlds seamlessly 
+        integrate. My current project combines advanced NLP models with voice recognition hardware 
+        to create a truly hands-free, intelligent document assistant.
+        
+        ### Beyond Academics
+        
+        When I'm not coding or studying circuit diagrams, you'll find me:
+        - 🎵 Exploring music production and audio signal processing
+        - 🏃‍♂️ Running and staying active (great for debugging complex problems!)
+        - 📚 Reading about emerging technologies and their societal impact
+        - 🛠️ Tinkering with IoT devices and home automation projects
+        """)
+    
+    with col2:
+        st.markdown("### Skills & Technologies")
+        
+        skills = {
+            "Programming": ["Python", "C/C++", "JavaScript", "MATLAB", "Verilog"],
+            "AI/ML": ["TensorFlow", "PyTorch", "Transformers", "RAG Systems", "FAISS"],
+            "Hardware": ["Arduino", "Raspberry Pi", "FPGA", "Circuit Design", "PCB Layout"],
+            "Web Development": ["Streamlit", "Gradio", "FastAPI", "React", "Node.js"],
+            "Tools": ["Git", "Docker", "Linux", "OpenAI API", "Jupyter"]
+        }
+        
+        for category, skill_list in skills.items():
+            st.markdown(f"**{category}:**")
+            for skill in skill_list:
+                st.markdown(f'<span class="skill-tag" style="color: white;">{skill}</span>', unsafe_allow_html=True)
+            st.markdown("")
+        
+        # Personal Values
+        st.markdown("### Core Values")
+        st.markdown("""
+        - **Innovation**: Always seeking new ways to solve old problems
+        - **Collaboration**: Technology is better when built together
+        - **Accessibility**: AI should be available to everyone
+        - **Ethics**: Responsible development of AI systems
+        - **Continuous Learning**: The field evolves daily, so must I
+        """)
+
+
+
+# Resume Page
+def show_resume():
+    st.markdown('<h1 class="section-header">📄 Resume</h1>', unsafe_allow_html=True)
+    
+    # Resume display
+    try:
+        # Display PDF resume
+        with open("./Tianshu_Yin_Resume_2026.pdf", "rb") as pdf_file:
+            base64_pdf = base64.b64encode(pdf_file.read()).decode('utf-8')
+        
+        pdf_display = f'<iframe src="data:application/pdf;base64,{base64_pdf}" width="100%" height="800" type="application/pdf"></iframe>'
+        st.markdown(pdf_display, unsafe_allow_html=True)
+        
+        # Download button
+        st.download_button(
+            label="📥 Download Resume (PDF)",
+            data=open("./Tianshu_Yin_Resume_2026.pdf", "rb").read(),
+            file_name="Tianshu_Yin_Resume_2026.pdf",
+            mime="application/pdf"
+        )
+        
+    except FileNotFoundError:
+        st.error("Resume file not found. Please ensure 'Tianshu_Yin_Resume_2026.pdf' is in the project directory.")
+        
+        # Fallback resume content
+        st.markdown("""
+        <div class="project-card">
+        <h3>📄 Resume Summary</h3>
+        <p>Please download the full resume or contact for the latest version.</p>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    
+    
+
+# Career Goals Page
+def show_career_goals():
+    st.markdown('<h1 class="section-header">🎯 Career Goals & Timeline</h1>', unsafe_allow_html=True)
+    
+    st.markdown("""
+    <div class="highlight-box">
+    <h3>🚀 Vision Statement</h3>
+    <p>To become a leading AI engineer who bridges the gap between cutting-edge research and practical applications, 
+    specializing in human-computer interaction and voice-controlled systems that make technology more accessible and intuitive.</p>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # Career Timeline
+    st.markdown("### 📅 10-Year Career Roadmap")
+    
+    timeline_data = [
+        {
+            "year": "Year 1-2 (2025-2027)",
+            "title": "🎓 Academic Foundation & Industry Experience",
+            "goals": [
+                "Complete B.S. in Electrical and Computer Engineering at Georgia Tech",
+                "Gain hands-on experience through internships at leading tech companies",
+                "Develop expertise in AI/ML frameworks and voice processing technologies",
+                "Publish research on RAG systems and voice-controlled interfaces"
+            ]
+        },
+        {
+            "year": "Year 3-4 (2028-2029)",
+            "title": "💼 Entry-Level AI Engineer",
+            "goals": [
+                "Join a top-tier tech company (Google, Microsoft, Apple) as AI/ML Engineer",
+                "Work on production-level voice assistant or conversational AI systems",
+                "Contribute to open-source AI projects and build professional network",
+                "Consider pursuing M.S. in Computer Science or AI (part-time/company-sponsored)"
+            ]
+        },
+        {
+            "year": "Year 5-6 (2030-2031)",
+            "title": "🔬 Specialized AI Researcher/Senior Engineer",
+            "goals": [
+                "Lead development of innovative voice-AI products or features",
+                "Complete graduate degree with focus on HCI and conversational AI",
+                "Speak at major AI conferences (NeurIPS, ICML, CHI)",
+                "Mentor junior engineers and contribute to AI ethics initiatives"
+            ]
+        },
+        {
+            "year": "Year 7-8 (2032-2033)",
+            "title": "🎯 Technical Leadership & Innovation",
+            "goals": [
+                "Become Principal Engineer or Research Scientist leading AI teams",
+                "Drive strategic technical decisions for AI product roadmaps",
+                "File patents for novel voice-AI and human-computer interaction technologies",
+                "Establish partnerships with academic institutions for research collaboration"
+            ]
+        },
+        {
+            "year": "Year 9-10 (2034-2035)",
+            "title": "🌟 Industry Expert & Thought Leader",
+            "goals": [
+                "Become recognized expert in conversational AI and voice technologies",
+                "Consider founding AI startup or joining executive leadership team",
+                "Influence industry standards and best practices for AI accessibility",
+                "Contribute to AI policy development and ethical AI initiatives globally"
+            ]
+        }
+    ]
+    
+    for i, phase in enumerate(timeline_data):
+        with st.expander(f"{phase['year']}: {phase['title']}", expanded=(i==0)):
+            st.markdown("**Key Objectives:**")
+            for goal in phase['goals']:
+                st.markdown(f"• {goal}")
+    
+    # Core Focus Areas
+    st.markdown("### 🎯 Core Focus Areas")
+    
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        st.markdown("""
+        <div class="project-card">
+        <h3>🤖 Technical Expertise</h3>
+        <p>
+        <strong>AI/ML Specializations:</strong><br>
+        • Natural Language Processing<br>
+        • Speech Recognition & Synthesis<br>
+        • Multimodal AI Systems<br>
+        • Edge AI & Hardware Optimization<br><br>
+        
+        <strong>Leadership Skills:</strong><br>
+        • Technical Team Management<br>
+        • Cross-functional Collaboration<br>
+        • Strategic Technology Planning<br>
+        • AI Ethics & Responsible Development
+        </p>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with col2:
+        st.markdown("""
+        <div class="project-card">
+        <h3>🌍 Impact Goals</h3>
+        <p>
+        <strong>Industry Contributions:</strong><br>
+        • Advance accessibility through voice AI<br>
+        • Bridge research-to-product gaps<br>
+        • Establish new HCI paradigms<br>
+        • Mentor next generation of AI engineers<br><br>
+        
+        <strong>Personal Development:</strong><br>
+        • Continuous learning in emerging AI fields<br>
+        • Building diverse, inclusive tech teams<br>
+        • Contributing to AI safety and ethics<br>
+        • Maintaining work-life balance
+        </p>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    # Success Metrics
+    st.markdown("### 📊 Success Indicators")
+    
+    metrics_cols = st.columns(4)
+    with metrics_cols[0]:
+        st.markdown('<div class="metric-container">', unsafe_allow_html=True)
+        st.metric("Target Publications", "15+", "Research papers & patents")
+        st.markdown('</div>', unsafe_allow_html=True)
+    
+    with metrics_cols[1]:
+        st.markdown('<div class="metric-container">', unsafe_allow_html=True)
+        st.metric("Team Leadership", "50+", "Engineers mentored")
+        st.markdown('</div>', unsafe_allow_html=True)
+    
+    with metrics_cols[2]:
+        st.markdown('<div class="metric-container">', unsafe_allow_html=True)
+        st.metric("Product Impact", "100M+", "Users reached")
+        st.markdown('</div>', unsafe_allow_html=True)
+    
+    with metrics_cols[3]:
+        st.markdown('<div class="metric-container">', unsafe_allow_html=True)
+        st.metric("Industry Recognition", "Top 40", "Under 40 AI leaders")
+        st.markdown('</div>', unsafe_allow_html=True)
+
+
+
 # Main Application
 def main():
     load_css()
@@ -1390,12 +1526,14 @@ def main():
     # Page routing
     if page == "chatbot":
         show_chatbot()
-    elif page == "home":
-        show_home()
+    elif page == "introduction":
+        show_introduction()
     elif page == "about":
         show_about()
-    elif page == "projects":
-        show_projects()
+    elif page == "resume":
+        show_resume()
+    elif page == "career_goals":
+        show_career_goals()
     elif page == "analytics":
         show_analytics()
     
