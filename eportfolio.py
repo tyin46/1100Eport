@@ -1199,35 +1199,100 @@ def show_analytics():
     
     st.plotly_chart(fig, width="stretch")
     
-    # Optimization Strategies
-    st.markdown("### 🔧 Optimization Strategies Implemented")
+    # Project Development Roadmap
+    st.markdown("### 🛣️ Project Development Roadmap")
     
-    strategies = [
+    roadmap_phases = [
         {
-            "strategy": "Embedding Model Fine-tuning",
-            "impact": "15% accuracy improvement",
-            "description": "Fine-tuned sentence-transformer model on domain-specific documents"
+            "phase": "Phase 1: Foundation & Research",
+            "timeline": "Weeks 1-2",
+            "description": "Established core RAG architecture and conducted extensive research on document processing methodologies",
+            "details": [
+                "Researched and selected moka-ai/m3e-base embedding model for multilingual support",
+                "Implemented FAISS vector database for efficient similarity search",
+                "Developed intelligent text chunking algorithm with overlap optimization",
+                "Created initial Streamlit interface for user interaction"
+            ]
         },
         {
-            "strategy": "Hybrid Retrieval System",
-            "impact": "22% better recall",
-            "description": "Combined dense and sparse retrieval with learned fusion weights"
+            "phase": "Phase 2: Core System Development",
+            "timeline": "Weeks 3-4",
+            "description": "Built the complete document QA pipeline with OpenAI GPT-4 integration and citation system",
+            "details": [
+                "Integrated OpenAI GPT-4 API for natural language response generation",
+                "Implemented citation-aware prompt engineering for accurate source attribution",
+                "Developed PDF document processing with PyPDF library",
+                "Created real-time document indexing and retrieval system"
+            ]
         },
         {
-            "strategy": "Response Caching",
-            "impact": "60% faster repeated queries",
-            "description": "Intelligent caching system with semantic similarity matching"
+            "phase": "Phase 3: Performance Optimization",
+            "timeline": "Weeks 5-6",
+            "description": "Enhanced system performance through advanced optimization techniques and caching mechanisms",
+            "details": [
+                "Fine-tuned embedding model achieving 15% accuracy improvement",
+                "Implemented hybrid retrieval system with 22% better recall",
+                "Developed intelligent caching system reducing query time by 60%",
+                "Optimized batch processing for 40% higher throughput"
+            ]
         },
         {
-            "strategy": "Batch Processing",
-            "impact": "40% higher throughput",
-            "description": "Optimized batch processing for multiple document uploads"
+            "phase": "Phase 4: Hardware Voice Integration",
+            "timeline": "Weeks 7-9",
+            "description": "Designed and implemented hardware-based voice input system for hands-free operation",
+            "details": [
+                "Integrated Raspberry Pi 4 with high-quality USB microphone array",
+                "Implemented wake-word detection using Porcupine engine",
+                "Developed real-time speech-to-text processing with Whisper API",
+                "Created noise cancellation algorithms for industrial environments",
+                "Built audio feedback system with text-to-speech capabilities"
+            ]
+        },
+        {
+            "phase": "Phase 5: Testing & Deployment",
+            "timeline": "Weeks 10-12",
+            "description": "Comprehensive testing, user validation, and production deployment with monitoring systems",
+            "details": [
+                "Conducted extensive testing in laboratory and manufacturing environments",
+                "Implemented comprehensive error handling and failover mechanisms",
+                "Developed performance monitoring dashboard with real-time metrics",
+                "Created user authentication and session management system",
+                "Deployed on Streamlit Cloud with automated CI/CD pipeline"
+            ]
+        },
+        {
+            "phase": "Phase 6: Advanced Features & Future Work",
+            "timeline": "Ongoing",
+            "description": "Continuous improvement with advanced AI features and expanded hardware integration",
+            "details": [
+                "Multi-modal document processing supporting images and tables",
+                "Edge computing optimization for reduced latency",
+                "Integration with IoT sensors for environmental data",
+                "Development of custom ASIC prototypes for embedding generation",
+                "Research into emotion detection and contextual conversation memory"
+            ]
         }
     ]
     
-    for strategy in strategies:
-        with st.expander(f"🚀 {strategy['strategy']} - {strategy['impact']}"):
-            st.markdown(strategy['description'])
+    for i, phase in enumerate(roadmap_phases):
+        with st.expander(f"🚀 {phase['phase']} - {phase['timeline']}", expanded=(i==3)):  # Expand hardware phase by default
+            st.markdown(f"**Overview:** {phase['description']}")
+            st.markdown("**Key Accomplishments:**")
+            for detail in phase['details']:
+                st.markdown(f"• {detail}")
+            
+            # Add special highlight for hardware phase
+            if "Hardware" in phase['phase']:
+                st.markdown("---")
+                st.markdown("**🎤 Hardware Voice System Architecture:**")
+                st.markdown("""
+                - **Hardware Platform**: Raspberry Pi 4B with 4GB RAM
+                - **Audio Input**: USB microphone array with noise isolation
+                - **Wake Word Engine**: Picovoice Porcupine for "Hey Document"
+                - **Speech Processing**: OpenAI Whisper API for high-accuracy transcription
+                - **Audio Output**: Bluetooth/USB speakers for system responses
+                - **Connectivity**: Wi-Fi for cloud processing, Ethernet for reliability
+                """)
 
 
 # Introduction Page
