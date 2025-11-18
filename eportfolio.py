@@ -1058,37 +1058,39 @@ class VoiceController:
         - Automated hardware diagnostics
         """)
     
-    # Additional Projects
-    st.markdown("## 🔧 Additional Projects")
+    # Hardware Implementation
+    st.markdown("## 🔧 Hardware Implementation")
     
-    other_projects = [
-        {
-            "title": "IoT Environmental Monitoring System",
-            "tech": "C++, Python, ESP32, MQTT, Machine Learning",
-            "description": "Wireless sensor network with predictive analytics for environmental monitoring",
-            "achievements": ["Deployed in 3 campus locations", "95% uptime over 6 months", "Featured in GT Engineering Showcase"]
-        },
-        {
-            "title": "FPGA-based Signal Processor",
-            "tech": "Verilog, MATLAB, Xilinx Vivado, DSP",
-            "description": "Custom digital signal processing implementation for real-time audio applications",
-            "achievements": ["50% faster than software implementation", "Published in IEEE student conference", "Patent application submitted"]
-        },
-        {
-            "title": "Autonomous Drone Navigation",
-            "tech": "Python, OpenCV, ROS, Computer Vision, Control Systems",
-            "description": "Computer vision-based autonomous navigation system for indoor environments",
-            "achievements": ["99% navigation accuracy", "Won GT Robotics Competition", "Open-sourced on GitHub (500+ stars)"]
-        }
-    ]
+    # Display hardware circuit image
+    try:
+        st.image("./Voice-Recognition-Circuit.jpg", 
+                caption="Voice Recognition Circuit Design for Document QA System", 
+                width=600)
+    except FileNotFoundError:
+        st.info("📸 Hardware circuit image (Voice-Recognition-Circuit.jpg) not found in project directory")
     
-    for project in other_projects:
-        with st.expander(f"🔍 {project['title']}"):
-            st.markdown(f"**Technologies:** {project['tech']}")
-            st.markdown(f"**Description:** {project['description']}")
-            st.markdown("**Key Achievements:**")
-            for achievement in project['achievements']:
-                st.markdown(f"• {achievement}")
+    st.markdown("""
+    ### 🎤 Voice Signal Processing Pipeline
+    
+    **Input Processing:**
+    - **Analog Audio Capture**: Microphone converts sound waves to analog electrical signals
+    - **ADC Conversion**: Analog-to-Digital Converter samples audio at 44.1kHz/16-bit
+    - **Digital Signal Processing**: Real-time noise filtering and voice enhancement algorithms
+    - **Wake Word Detection**: Porcupine engine processes audio stream for "Hey Document" trigger
+    - **Speech Recognition**: Whisper API converts processed audio to text queries
+    
+    **Output Generation:**
+    - **Text Response Processing**: RAG system generates citation-rich answers
+    - **Text-to-Speech Conversion**: Natural language responses converted to audio waveforms
+    - **DAC Output**: Digital audio converted back to analog signals
+    - **Audio Amplification**: Speaker driver amplifies signals for clear audio output
+    - **Microphone Module Output**: Integrated speaker provides hands-free audio feedback
+    
+    **Note**: *While the full hardware system is designed for voice interaction, 
+    this online demo uses text input for compatibility and demonstration purposes.*
+    """)
+    
+    
 
 # Analytics Page
 def show_analytics():
